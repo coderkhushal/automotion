@@ -8,6 +8,9 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 const prisma = new PrismaClient()
+app.get("/health", (req , res)=>{
+    res.status(200).json({message: "working"})
+})
 app.post("/hooks/catch/:userid/:motionid", async (req, res) => {
     try {
 

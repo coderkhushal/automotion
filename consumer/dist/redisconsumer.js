@@ -22,6 +22,9 @@ app.use(express_1.default.json());
 app.use(body_parser_1.default.json());
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
+app.get("/health", (req, res) => {
+    res.status(200).send("working");
+});
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         app.listen(8000, () => {

@@ -10,8 +10,7 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.get("/health", (req, res) => {
-    res.status(200).send("working"
-    )
+    res.status(200).json({success:true})
 })
 async function main() {
     app.listen(8000, () => {
