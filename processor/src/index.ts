@@ -1,4 +1,4 @@
-import { Action, MotionRunOutbox } from "@prisma/client";
+
 import { DbManager } from "./dbManager";
 require("dotenv").config()
 import { RedisPublisher } from "./redisPublisher";
@@ -25,7 +25,7 @@ async function main() {
 
             let motionrunoutbox = await DbManager.getInstance().getmotionRunOutBox(10)
             
-        motionrunoutbox.forEach(async (e: MotionRunOutbox) => {
+        motionrunoutbox.forEach(async (e: any) => {
             console.log("processing motionrun")
             const motionrun = await DbManager.getInstance().getmotionRunFromMotionrunOutbox(e.motionrunId)
             
