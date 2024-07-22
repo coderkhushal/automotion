@@ -1,8 +1,23 @@
 import { Redis } from "ioredis";
 import { MailerService } from "./services/MailerService";
+import bodyParser from "body-parser";
+import cors from "cors"
+import Express from "express"
+const app = Express()
 
+app.use(Express.json())
+app.use(bodyParser.json())
+app.use(cors())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.get("/health", (req, res) => {
+    res.status(200).send("working"
+    )
+})
 async function main() {
-
+    app.listen(8000, () => {
+        console.log("listening on port 8000")
+    }
+    )
     const client = new Redis(process.env.REDIS_URL!.toString())
     client.on("connect", () => {
         console.log("connected")

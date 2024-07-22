@@ -1,10 +1,23 @@
 import { DbManager } from "./dbManager";
 require("dotenv").config()
 import { RedisPublisher } from "./redisPublisher";
+import bodyParser from "body-parser";
+import cors from "cors"
+import Express from "express"
+const app = Express()
 
-
+app.use(Express.json())
+app.use(bodyParser.json())
+app.use(cors())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.get("/health", (req, res)=>{
+    res.status(200).send("working")
+})
 async function main() {
-    
+
+    app.listen( 8000, ()=>{
+        console.log("listening on port 8000")
+    })
     console.log("processing started")
     while (1) {
         try{
