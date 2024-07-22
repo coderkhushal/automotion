@@ -19,7 +19,7 @@ app.post("/hooks/catch/:userid/:motionid", async (req, res) => {
         // store in db a new trigger
         console.log(motionId)
 
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any): Promise<void> => {
 
             const run = await tx.motionRun.create({
                 data: {

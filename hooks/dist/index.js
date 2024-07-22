@@ -22,6 +22,9 @@ app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
 const prisma = new client_1.PrismaClient();
+app.get("/health", (req, res) => {
+    res.status(200).json({ message: "working" });
+});
 app.post("/hooks/catch/:userid/:motionid", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userid = req.params.userid;
