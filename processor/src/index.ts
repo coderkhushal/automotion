@@ -25,6 +25,7 @@ async function main() {
             let motionrunoutbox = await DbManager.getInstance().getmotionRunOutBox(10)
             
         motionrunoutbox.forEach(async (e) => {
+            console.log("processing motionrun")
             const motionrun = await DbManager.getInstance().getmotionRunFromMotionrunOutbox(e.motionrunId)
             
             if (motionrun) {

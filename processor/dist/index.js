@@ -36,6 +36,7 @@ function main() {
             try {
                 let motionrunoutbox = yield dbManager_1.DbManager.getInstance().getmotionRunOutBox(10);
                 motionrunoutbox.forEach((e) => __awaiter(this, void 0, void 0, function* () {
+                    console.log("processing motionrun");
                     const motionrun = yield dbManager_1.DbManager.getInstance().getmotionRunFromMotionrunOutbox(e.motionrunId);
                     if (motionrun) {
                         const zap = yield dbManager_1.DbManager.getInstance().getActionsForZap(motionrun.motionId);
