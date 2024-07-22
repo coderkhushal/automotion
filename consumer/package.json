@@ -1,0 +1,21 @@
+{
+  "name": "consumer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "consume": "tsc -b && node dist/redisconsumer.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/ioredis": "^4.28.10",
+    "dotenv": "^16.4.5",
+    "ioredis": "^5.4.1",
+    "kafkajs": "^2.2.4",
+    "nodemailer": "^6.9.14",
+    "ts-node": "^10.9.2"
+  }
+}

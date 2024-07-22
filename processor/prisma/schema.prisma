@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User{
+  id  Int  @unique @default(autoincrement())
+  name String
+  email String
+  password String
+}
+
+model Motion{
+  id String @id @unique  @default(uuid())
+  trigger  Trigger?
+  actions Action[]
+  motionruns MotionRun[]
+}
+
+
+model Trigger{
+
+  id String @default(uuid()) @id
+  motionId String @unique
+  motion Motion @relation(fields: [motionId], references: [id])
+  triggerid String @unique
+  type AvailableTrigger @relation(fields: [triggerid], references: [id])
+  
+  
+}
+model AvailableTrigger{
+  id String @default(uuid()) @id
+  name String
+  triggers Trigger[]
+}
+
+
+model Action{
+  id String @id @default(uuid())
+  name String
+  motionid String
+  motion Motion @relation(fields: [motionid], references: [id])
+  type AvaiableAction @relation(fields: [id] , references: [id])
+  
+
+}
+model AvaiableAction{
+  id String @id @unique @default(uuid())
+  name String
+  actions Action[]
+
+  
+
+}
+
+model MotionRun{
+  id String @unique @default(uuid())
+   motionId String
+   motion Motion @relation(fields: [motionId], references: [id] )
+   motionrunoutbox MotionRunOutbox?
+   metadata Json
+}
+
+model MotionRunOutbox{
+  id String  @id @default(uuid())
+  motionrunId String @unique
+  motionRun MotionRun @relation(fields: [motionrunId], references: [id])
+  metadata Json
+} 
