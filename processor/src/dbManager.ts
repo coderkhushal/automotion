@@ -22,7 +22,7 @@ export class DbManager{
         await this.client.motionRunOutbox.deleteMany({
             where:{
                 id:{
-                    in: motionrunOutBox.map(e=>e.id)
+                    in: motionrunOutBox.map((e : any)=>e.id)
                 }
             }
         })

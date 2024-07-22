@@ -1,3 +1,4 @@
+import { Action, MotionRunOutbox } from "@prisma/client";
 import { DbManager } from "./dbManager";
 require("dotenv").config()
 import { RedisPublisher } from "./redisPublisher";
@@ -24,7 +25,7 @@ async function main() {
 
             let motionrunoutbox = await DbManager.getInstance().getmotionRunOutBox(10)
             
-        motionrunoutbox.forEach(async (e) => {
+        motionrunoutbox.forEach(async (e: MotionRunOutbox) => {
             console.log("processing motionrun")
             const motionrun = await DbManager.getInstance().getmotionRunFromMotionrunOutbox(e.motionrunId)
             
@@ -32,7 +33,7 @@ async function main() {
                 
                 const zap = await DbManager.getInstance().getActionsForZap(motionrun.motionId)
                 if(zap?.actions && zap?.actions.length>0){
-                    zap.actions.forEach(async(action)=>{
+                    zap.actions.forEach(async(action: any): Promise<void>=>{
                     RedisPublisher.getInstance().publishData({action , metadata: e.metadata})
                     
                 })
