@@ -45,7 +45,7 @@ function main() {
                 switch (data.action.type.name) {
                     case "email":
                         console.log("sent to email service");
-                        MailerService_1.MailerService.getInstance().sendMail(data.metadata.to, data.metadata.subject, data.metadata.text);
+                        yield MailerService_1.MailerService.getInstance().sendMail(data.metadata.to, data.metadata.subject, data.metadata.text);
                         break;
                     default:
                         break;

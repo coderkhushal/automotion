@@ -35,7 +35,7 @@ export class DbManager{
             }
         })
     }
-    async getActionsForZap(motionId: string){
+    async getActionsForMotion(motionId: string){
         return await this.client.motion.findUnique({
             where:{
                 id: motionId
