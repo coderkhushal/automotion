@@ -48,7 +48,7 @@ class DbManager {
             });
         });
     }
-    getActionsForZap(motionId) {
+    getActionsForMotion(motionId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.client.motion.findUnique({
                 where: {

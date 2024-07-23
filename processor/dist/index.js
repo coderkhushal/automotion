@@ -39,10 +39,12 @@ function main() {
                     console.log("processing motionrun");
                     const motionrun = yield dbManager_1.DbManager.getInstance().getmotionRunFromMotionrunOutbox(e.motionrunId);
                     if (motionrun) {
-                        const zap = yield dbManager_1.DbManager.getInstance().getActionsForZap(motionrun.motionId);
-                        if ((zap === null || zap === void 0 ? void 0 : zap.actions) && (zap === null || zap === void 0 ? void 0 : zap.actions.length) > 0) {
-                            zap.actions.forEach((action) => __awaiter(this, void 0, void 0, function* () {
+                        const motion = yield dbManager_1.DbManager.getInstance().getActionsForMotion(motionrun.motionId);
+                        if ((motion === null || motion === void 0 ? void 0 : motion.actions) && (motion === null || motion === void 0 ? void 0 : motion.actions.length) > 0) {
+                            motion.actions.forEach((action) => __awaiter(this, void 0, void 0, function* () {
+                                console.log("pushing action", action);
                                 redisPublisher_1.RedisPublisher.getInstance().publishData({ action, metadata: e.metadata });
+                                console.log("pushed");
                             }));
                         }
                     }

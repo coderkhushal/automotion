@@ -34,8 +34,9 @@ async function main() {
                 const motion = await DbManager.getInstance().getActionsForMotion(motionrun.motionId)
                 if(motion?.actions && motion?.actions.length>0){
                     motion.actions.forEach(async(action: any): Promise<void>=>{
-                        console.log("publishing action")
+                        console.log("pushing action", action)
                     RedisPublisher.getInstance().publishData({action , metadata: e.metadata})
+                    console.log("pushed")
                     
                 })
                 }    
