@@ -17,12 +17,14 @@ datasource db {
 model User{
   id  Int  @unique @default(autoincrement())
   name String
-  email String
+  email String @unique
   password String
 }
 
 model Motion{
   id String @id @unique  @default(uuid())
+  userId Int
+  triggerId String @unique
   trigger  Trigger?
   actions Action[]
   motionruns MotionRun[]
@@ -34,8 +36,9 @@ model Trigger{
   id String @default(uuid()) @id
   motionId String @unique
   motion Motion @relation(fields: [motionId], references: [id])
-  triggerid String @unique
-  type AvailableTrigger @relation(fields: [triggerid], references: [id])
+  availableId String @unique
+  triggerMetadata Json
+  type AvailableTrigger @relation(fields: [availableId], references: [id])
   
   
 }
@@ -51,11 +54,13 @@ model Action{
   name String
   motionid String
   motion Motion @relation(fields: [motionid], references: [id])
-  type AvaiableAction @relation(fields: [id] , references: [id])
+  actionId String
+  type AvailableAction @relation(fields: [actionId] , references: [id])
+  sortingOrder  Int @default(0)
   
 
 }
-model AvaiableAction{
+model AvailableAction{
   id String @id @unique @default(uuid())
   name String
   actions Action[]
