@@ -145,6 +145,7 @@ router.delete("/:motionId", authMiddleware, async (req: Request, res: Response) 
         const id = (req as any).id;
         const motionId = req.params.motionId;
         prismaClient.$transaction(async (tx: any) => {
+            
             let motion = await tx.motion.findUnique({
                 where: {
                     id: motionId,
