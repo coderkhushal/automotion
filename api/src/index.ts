@@ -1,4 +1,4 @@
-import express from "express"
+import express, { Request, Response } from "express"
 import bodyParser from "body-parser"
 import cors from "cors"
 import { userRouter } from "./routes/auth"
@@ -10,6 +10,9 @@ app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
+app.use("/health", (req: Request, res: Response)=>{
+    res.status(200).json({success: true})
+})
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/motion",motionRouter)
 app.use("/api/v1/action",actionRouter)
