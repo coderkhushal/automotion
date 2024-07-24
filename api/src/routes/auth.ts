@@ -9,7 +9,7 @@ import { DbManager } from "../db";
 
 const router = Router();
 const prismaClient = DbManager.getInstance().getClient();
-router.post("/signup", async (req, res) => {
+router.post("/signup", async (req: Request, res :Response) => {
     const body = req.body;
     const parsedData = SignupSchema.safeParse(body);
 
@@ -51,7 +51,7 @@ router.post("/signup", async (req, res) => {
 
 })
 
-router.post("/signin", async (req, res) => {
+router.post("/signin", async (req: Request, res :Response) => {
     const body = req.body;
     const parsedData = SigninSchema.safeParse(body);
 

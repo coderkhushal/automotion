@@ -1,13 +1,13 @@
 
 
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { authMiddleware } from "../middleware";
 import { MotionCreateSchema } from "../types";
 import { DbManager } from "../db";
 
 const router = Router();
 const prismaClient = DbManager.getInstance().getClient();
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", authMiddleware, async (req:Request, res: Response) => {
     try{
 
         const id: string = (req as any).id;
@@ -77,7 +77,7 @@ catch(err){
 }
 })
 
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authMiddleware, async (req:Request, res: Response) => {
     
     const id = (req as any).id;
     const motions = await prismaClient.motion.findMany({
@@ -103,7 +103,7 @@ router.get("/", authMiddleware, async (req, res) => {
     })
 })
 
-router.get("/:motionId", authMiddleware, async (req, res) => {
+router.get("/:motionId", authMiddleware, async (req:Request, res: Response) => {
     //@ts-ignore
     const id = req.id;
     const motionId = req.params.motionId;
