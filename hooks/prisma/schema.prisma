@@ -27,7 +27,7 @@ model Motion{
   triggerId String @unique
   trigger  Trigger?
   actions Action[]
-  motionruns MotionRun[]
+  motionruns MotionRun[] 
 }
 
 
@@ -53,7 +53,7 @@ model Action{
   id String @id @default(uuid())
   name String
   motionid String
-  motion Motion @relation(fields: [motionid], references: [id])
+  motion Motion @relation(fields: [motionid], references: [id], onDelete: Cascade)
   actionId String
   type AvailableAction @relation(fields: [actionId] , references: [id])
   sortingOrder  Int @default(0)
@@ -64,8 +64,7 @@ model AvailableAction{
   id String @id @unique @default(uuid())
   name String
   actions Action[]
-  requiredfields Json 
-
+  requiredfields Json
   
 
 }
@@ -73,7 +72,7 @@ model AvailableAction{
 model MotionRun{
   id String @unique @default(uuid())
    motionId String
-   motion Motion @relation(fields: [motionId], references: [id] )
+   motion Motion @relation(fields: [motionId], references: [id] , onDelete: Cascade)
    motionrunoutbox MotionRunOutbox?
    metadata Json
 }
