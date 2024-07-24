@@ -22,21 +22,24 @@ app.use(express_1.default.json());
 app.use(body_parser_1.default.json());
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
+let loop = true;
 app.get("/health", (req, res) => {
+    loop = false;
+    setTimeout(() => {
+        loop = true;
+        main();
+    }, 5000);
     res.status(200).json({ success: true });
 });
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        app.listen(8000, () => {
-            console.log("listening on port 8000");
-        });
         const client = new ioredis_1.Redis(process.env.REDIS_URL.toString());
         client.on("connect", () => {
             console.log("connected");
         });
-        while (1) {
+        while (loop) {
             try {
-                const response = yield client.brpop("AutomotionEvents", 0);
+                const response = yield client.brpop("AutomotionEvents", 5);
                 if (!response) {
                     continue;
                 }
@@ -57,4 +60,7 @@ function main() {
         }
     });
 }
+app.listen(8000, () => {
+    console.log("listening on port 8000");
+});
 main();
