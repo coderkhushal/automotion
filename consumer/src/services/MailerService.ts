@@ -4,15 +4,7 @@ export class MailerService {
     private static instance : MailerService
     private transporter : any
     private constructor(){
-        this.transporter = nodemailer.createTransport({
-            host: process.env.NODEMAILER_HOST || 'smtp.gmail.com',
-            port: 587,
-            secure: false,
-            auth: {
-                user: process.env.NODEMAILER_USER,
-                pass: process.env.NODEMAILER_PASS
-            }
-        })
+ 
     }
     public static getInstance(){
         if(!this.instance){
@@ -20,11 +12,19 @@ export class MailerService {
         }
         return this.instance
     }
-    public async sendMail(to: string, subject: string, text: string){
+    public async sendMail(SMTP_USER: string, SMTP_PASS: string, SMTP_HOST:string, to: string, subject: string, text: string){
         try{
-
+            this.transporter = await nodemailer.createTransport({
+                host: SMTP_HOST || 'smtp.gmail.com',
+                port: 587,
+                secure: false,
+                auth: {
+                    user: SMTP_USER ,
+                    pass: SMTP_PASS
+                }
+            })
             await this.transporter.sendMail({
-                from: process.env.NODEMAILER_USER,
+                from: SMTP_USER,
                 to,
                 subject,
                 text

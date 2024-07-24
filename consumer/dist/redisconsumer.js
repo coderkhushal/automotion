@@ -35,7 +35,7 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const client = new ioredis_1.Redis(process.env.REDIS_URL.toString());
         client.on("connect", () => {
-            console.log("connected");
+            console.log("connnected to redis");
         });
         while (loop) {
             try {
@@ -47,8 +47,8 @@ function main() {
                 const data = JSON.parse(response[1]);
                 switch (data.action.type.name) {
                     case "email":
-                        console.log("sent to email service");
-                        yield MailerService_1.MailerService.getInstance().sendMail(data.metadata.to, data.metadata.subject, data.metadata.text);
+                        console.log("sent to email service", data.metadata);
+                        yield MailerService_1.MailerService.getInstance().sendMail(data.metadata.SMTP_USER, data.metadata.SMTP_PASS, data.metadata.SMTP_HOST, data.metadata.to, data.metadata.subject, data.metadata.text);
                         break;
                     default:
                         break;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MotionCreateSchema = exports.SigninSchema = exports.SignupSchema = void 0;
+exports.EmailActionSchema = exports.MotionCreateSchema = exports.SigninSchema = exports.SignupSchema = void 0;
 const zod_1 = require("zod");
 exports.SignupSchema = zod_1.z.object({
     username: zod_1.z.string().min(5),
@@ -16,7 +16,12 @@ exports.MotionCreateSchema = zod_1.z.object({
     triggerMetadata: zod_1.z.any().optional(),
     actions: zod_1.z.array(zod_1.z.object({
         availableActionId: zod_1.z.string(),
-        Metadata: zod_1.z.any().optional(),
+        actionmetadata: zod_1.z.record(zod_1.z.any()),
         name: zod_1.z.string()
     }))
+});
+exports.EmailActionSchema = zod_1.z.object({
+    SMTP_USER: zod_1.z.string(),
+    SMTP_PASS: zod_1.z.string(),
+    SMTP_HOST: zod_1.z.string(),
 });

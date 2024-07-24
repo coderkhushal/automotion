@@ -16,7 +16,15 @@ export const MotionCreateSchema = z.object({
     triggerMetadata: z.any().optional(),
     actions: z.array(z.object({
         availableActionId: z.string(),
-        Metadata: z.any().optional(),
+        actionmetadata: z.record(z.any()),
         name: z.string()
     }))
 });
+
+
+export const EmailActionSchema = z.object({
+    SMTP_USER: z.string(),
+    SMTP_PASS: z.string(),
+    SMTP_HOST: z.string(),
+    
+})

@@ -48,7 +48,7 @@ class DbManager {
             });
         });
     }
-    getActionsForMotion(motionId) {
+    getMotion(motionId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.client.motion.findUnique({
                 where: {
@@ -59,9 +59,10 @@ class DbManager {
                         select: {
                             type: {
                                 select: {
-                                    name: true
+                                    name: true,
                                 }
-                            }
+                            },
+                            actionmetadata: true
                         }
                     }
                 }

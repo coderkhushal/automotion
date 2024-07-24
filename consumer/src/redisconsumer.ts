@@ -37,7 +37,7 @@ async function main() {
             switch (data.action.type.name) {
                 case "email":
                     console.log("sent to email service")
-                    await MailerService.getInstance().sendMail(data.metadata.to, data.metadata.subject, data.metadata.text)
+                    await MailerService.getInstance().sendMail(data.metadata.SMTP_USER, data.metadata.SMTP_PASS, data.metadata.SMTP_HOST, data.metadata.to, data.metadata.subject, data.metadata.text)
                     break;
                 default:
                     break

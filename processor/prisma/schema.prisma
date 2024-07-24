@@ -57,14 +57,14 @@ model Action{
   actionId String
   type AvailableAction @relation(fields: [actionId] , references: [id])
   sortingOrder  Int @default(0)
-  
+  actionmetadata Json
 
 }
 model AvailableAction{
   id String @id @unique @default(uuid())
   name String
   actions Action[]
-
+  requiredfields Json
   
 
 }

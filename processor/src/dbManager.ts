@@ -35,7 +35,7 @@ export class DbManager{
             }
         })
     }
-    async getActionsForMotion(motionId: string){
+    async getMotion(motionId: string){
         return await this.client.motion.findUnique({
             where:{
                 id: motionId
@@ -46,9 +46,12 @@ export class DbManager{
  
                         type: {
                             select:{
-                                name: true
+                                name: true,
+                                
                             }
-                        }
+                        },
+                        actionmetadata: true
+
                     }
                 }
             }

@@ -14,15 +14,6 @@ const nodemailer = require('nodemailer');
 require("dotenv").config();
 class MailerService {
     constructor() {
-        this.transporter = nodemailer.createTransport({
-            host: process.env.NODEMAILER_HOST || 'smtp.gmail.com',
-            port: 587,
-            secure: false,
-            auth: {
-                user: process.env.NODEMAILER_USER,
-                pass: process.env.NODEMAILER_PASS
-            }
-        });
     }
     static getInstance() {
         if (!this.instance) {
@@ -30,11 +21,20 @@ class MailerService {
         }
         return this.instance;
     }
-    sendMail(to, subject, text) {
+    sendMail(SMTP_USER, SMTP_PASS, SMTP_HOST, to, subject, text) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                this.transporter = yield nodemailer.createTransport({
+                    host: SMTP_HOST || 'smtp.gmail.com',
+                    port: 587,
+                    secure: false,
+                    auth: {
+                        user: SMTP_USER,
+                        pass: SMTP_PASS
+                    }
+                });
                 yield this.transporter.sendMail({
-                    from: process.env.NODEMAILER_USER,
+                    from: SMTP_USER,
                     to,
                     subject,
                     text

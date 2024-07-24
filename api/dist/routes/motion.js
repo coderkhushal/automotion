@@ -26,6 +26,7 @@ router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, vo
                 message: "Incorrect inputs"
             });
         }
+        console.log(parsedData.data);
         const motionId = yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
             const motion = yield tx.motion.create({
                 data: {
@@ -46,6 +47,7 @@ router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, vo
                             actionId: x.availableActionId,
                             sortingOrder: index,
                             name: x.name,
+                            actionmetadata: x.actionmetadata
                         }))
                     }
                 },
@@ -90,7 +92,7 @@ router.get("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, voi
                 include: {
                     type: true
                 }
-            }
+            },
         }
     });
     return res.json({
@@ -122,5 +124,50 @@ router.get("/:motionId", middleware_1.authMiddleware, (req, res) => __awaiter(vo
     return res.json({
         motion
     });
+}));
+router.delete("/:motionId", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.id;
+        const motionId = req.params.motionId;
+        prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+            let motion = yield tx.motion.findUnique({
+                where: {
+                    id: motionId,
+                    userId: id
+                }, include: {
+                    actions: true,
+                }
+            });
+            if (!motion) {
+                return;
+            }
+            yield tx.action.deleteMany({
+                where: {
+                    id: {
+                        in: motion.actions.map((x) => x.id)
+                    }
+                }
+            });
+            yield tx.trigger.delete({
+                where: {
+                    id: motion.triggerId
+                }
+            });
+            yield tx.motion.delete({
+                where: {
+                    id: motionId
+                }
+            });
+        }));
+        return res.json({
+            message: "Motion deleted"
+        });
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
 }));
 exports.motionRouter = router;
