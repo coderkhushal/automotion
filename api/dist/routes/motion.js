@@ -17,58 +17,64 @@ const db_1 = require("../db");
 const router = (0, express_1.Router)();
 const prismaClient = db_1.DbManager.getInstance().getClient();
 router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // @ts-ignore
-    const id = req.id;
-    const body = req.body;
-    const parsedData = types_1.MotionCreateSchema.safeParse(body);
-    if (!parsedData.success) {
-        return res.status(411).json({
-            message: "Incorrect inputs"
-        });
-    }
-    const motionId = yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
-        const motion = yield tx.motion.create({
-            data: {
-                userId: parseInt(id),
-                triggerId: "",
-                trigger: {
-                    create: {
-                        triggerMetadata: parsedData.data.triggerMetadata,
-                        type: {
-                            connect: {
-                                id: parsedData.data.availableTriggerId
+    try {
+        const id = req.id;
+        const body = req.body;
+        const parsedData = types_1.MotionCreateSchema.safeParse(body);
+        if (!parsedData.success) {
+            return res.status(411).json({
+                message: "Incorrect inputs"
+            });
+        }
+        const motionId = yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+            const motion = yield tx.motion.create({
+                data: {
+                    userId: parseInt(id),
+                    triggerId: "",
+                    trigger: {
+                        create: {
+                            triggerMetadata: parsedData.data.triggerMetadata,
+                            type: {
+                                connect: {
+                                    id: parsedData.data.availableTriggerId
+                                }
                             }
                         }
+                    },
+                    actions: {
+                        create: parsedData.data.actions.map((x, index) => ({
+                            actionId: x.availableActionId,
+                            sortingOrder: index,
+                            name: x.name,
+                        }))
                     }
                 },
-                actions: {
-                    create: parsedData.data.actions.map((x, index) => ({
-                        actionId: x.availableActionId,
-                        sortingOrder: index,
-                        name: x.name,
-                    }))
+                include: {
+                    trigger: true
                 }
-            },
-            include: {
-                trigger: true
-            }
+            });
+            yield tx.motion.update({
+                where: {
+                    id: motion.id
+                },
+                data: {
+                    triggerId: motion.trigger.id
+                }
+            });
+            return motion.id;
+        }));
+        return res.json({
+            motionId
         });
-        yield tx.motion.update({
-            where: {
-                id: motion.id
-            },
-            data: {
-                triggerId: motion.trigger.id
-            }
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error"
         });
-        return motion.id;
-    }));
-    return res.json({
-        motionId
-    });
+    }
 }));
 router.get("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // @ts-ignore
     const id = req.id;
     const motions = yield prismaClient.motion.findMany({
         where: {

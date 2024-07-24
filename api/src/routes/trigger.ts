@@ -6,7 +6,7 @@ const prismaClient = DbManager.getInstance().getClient()
 const router = Router();
 
 router.get("/available", async (req, res) => {
-    const availableTriggers = await prismaClient.availableTriggers.findMany({});
+    const availableTriggers = await prismaClient.AvailableTrigger.findMany({});
     res.json({
         availableTriggers
     })

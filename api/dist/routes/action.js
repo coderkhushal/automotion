@@ -9,12 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.actionRouter = void 0;
 const db_1 = require("../db");
 const express_1 = require("express");
 const prismaClient = db_1.DbManager.getInstance().getClient();
 const router = (0, express_1.Router)();
+exports.actionRouter = router;
 router.get("/available", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const actions = yield prismaClient.availableactions.findMany();
+    const actions = yield prismaClient.AvailableAction.findMany();
     return res.json({
         actions
     });

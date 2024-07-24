@@ -8,13 +8,14 @@ import { DbManager } from "../db";
 const router = Router();
 const prismaClient = DbManager.getInstance().getClient();
 router.post("/", authMiddleware, async (req, res) => {
-    
-    const id: string = (req as any).id;
-    const body = req.body;
-    const parsedData = MotionCreateSchema.safeParse(body);
+    try{
 
-    if (!parsedData.success) {
-        return res.status(411).json({
+        const id: string = (req as any).id;
+        const body = req.body;
+        const parsedData = MotionCreateSchema.safeParse(body);
+
+        if (!parsedData.success) {
+            return res.status(411).json({
             message: "Incorrect inputs"
         });
     }
@@ -40,7 +41,7 @@ router.post("/", authMiddleware, async (req, res) => {
                         actionId: x.availableActionId,
                         sortingOrder: index,
                         name: x.name,
-
+                        
                     }))
                 }
             },
@@ -66,6 +67,14 @@ router.post("/", authMiddleware, async (req, res) => {
     return res.json({
         motionId
     })
+}
+catch(err){
+    console.log(err)
+    return res.status(500).json({
+        message: "Internal server error"
+    })
+
+}
 })
 
 router.get("/", authMiddleware, async (req, res) => {

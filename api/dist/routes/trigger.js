@@ -15,7 +15,7 @@ const db_1 = require("../db");
 const prismaClient = db_1.DbManager.getInstance().getClient();
 const router = (0, express_1.Router)();
 router.get("/available", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const availableTriggers = yield prismaClient.availableTriggers.findMany({});
+    const availableTriggers = yield prismaClient.AvailableTrigger.findMany({});
     res.json({
         availableTriggers
     });
