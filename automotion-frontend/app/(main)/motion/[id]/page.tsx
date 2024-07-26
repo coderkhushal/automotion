@@ -1,0 +1,67 @@
+"use client"
+import { getMotionById } from '@/actions/motion'
+import ActionSidebar from '@/components/web/motion/action_sidebar'
+
+import TriggerSidebar from '@/components/web/motion/tirgger_sidebar'
+import { useAuthContext } from '@/context/AuthContext'
+import { ActionType, MotionType } from '@/types'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+
+const SingleMotion = ({ params }: { params: { id: string } }) => {
+    const { user, fetchUser } = useAuthContext()
+    const router = useRouter()
+    const [variant, setvariant] = useState<"ACTION" | "TRIGGER">("TRIGGER")
+    const [motion, setmotion] = useState<MotionType | null>(null)
+    const [selectedAction, setselectedAction] = useState<ActionType | null>(null)
+    useEffect(() => {
+        fetchSingleMotion()
+    }, [])
+    const fetchSingleMotion = async () => {
+        if (!user) {
+            await fetchUser()
+            if (!user) {
+                router.push("/auth/login")
+            }
+        }
+        if (user) {
+            const data = await getMotionById(params.id)
+            if (data.success) {
+                console.log(data.data.motion)
+                setmotion(data.data.motion)
+            }
+            else {
+                alert("motion not found")
+            }
+        }
+    }
+
+    return (
+        <div className='h-full flex flex-col w-full  p-4'>
+            <h1 className="font-semibold cursor-pointer shadow-xl text-sm lg:text-xl bg-gray-100 p-2 rounded-xl" onClick={() => { navigator.clipboard.writeText(`https://hookservice.onrender.com/hooks/catch/${user?.id}/${params.id}`); alert("copied") }}>
+                
+                https://hookservice.onrender.com/hooks/catch/{user?.id}/{params.id}
+            </h1>
+            <div className="flex w-full h-full">
+
+                <div className="flex w-full justify-center items-center flex-col space-y-2 my-8">
+
+                    <div className='bg-tertiary text-yellow-50 shadow-2xl border-black border-2 w-1/2 rounded-2xl py-7 px-2 font-bold text-center' onClick={() => setvariant("TRIGGER")}>{motion?.trigger?.type.name}</div>
+
+                    {motion?.actions && motion.actions.length === 0 && <h1 className='text-center text-2xl'>No Actions Found</h1>}
+                    {(motion?.actions && motion.actions.length>0) && motion.actions.map((e)=>(
+                        <div className='bg-tertiary text-yellow-50 shadow-2xl border-black border-2 w-1/2 rounded-2xl py-7 px-2 font-bold text-center' onClick={() => { setvariant("ACTION"); setselectedAction(e) }}>{e.name}</div>
+                    ))}
+                </div>
+                <div className="w-1/3 hidden bg-quarternary h-full p-4 lg:flex">
+
+                    {variant == "TRIGGER" ? <TriggerSidebar trigger={motion?.trigger ? motion.trigger : null} /> : <ActionSidebar action={selectedAction} />}
+                </div>
+            </div>
+
+        </div>
+
+    )
+}
+
+export default SingleMotion

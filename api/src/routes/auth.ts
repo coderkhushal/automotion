@@ -108,6 +108,7 @@ router.get("/", authMiddleware, async (req: Request, res:Response) => {
             id
         },
         select: {
+            id:true,
             name: true,
             email: true
         }

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import AuthState from "@/context/AuthContext";
+import MobileNavigation from "@/components/web/navigation/mobile_navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +17,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+
+    <AuthState>
+
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+      <MobileNavigation/>
+        {children}</body>
     </html>
+    </AuthState>
   );
 }
