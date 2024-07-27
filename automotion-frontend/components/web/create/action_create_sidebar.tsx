@@ -16,7 +16,7 @@ import {
 const ActionCreateSidebar = ({ motion, action, setmotion, actionnum }:
   {
     motion: MotionCreateType,
-    action: { name: string, availableActionId: string, actionMetadata: any },
+    action: { name: string, availableActionId: string, actionmetadata: any },
     setmotion: (x: MotionCreateType) => void,
     actionnum: number
 
@@ -50,13 +50,13 @@ const ActionCreateSidebar = ({ motion, action, setmotion, actionnum }:
         if(a){
           
           y.actions[actionnum].availableActionId = a?.id
-          y.actions[actionnum].actionMetadata = availableAction?.find((action) => action.name == value)?.requiredfields || {}
+          y.actions[actionnum].actionmetadata = availableAction?.find((action) => action.name == value)?.requiredfields || {}
           setmotion(y)
         }
         break;
       case "ACTION_METADATA":
         let z = { ...motion }
-        z.actions[actionnum].actionMetadata[value.key] = value.value
+        z.actions[actionnum].actionmetadata[value.key] = value.value
         setmotion(z)
         break;
       default:
@@ -87,11 +87,11 @@ const ActionCreateSidebar = ({ motion, action, setmotion, actionnum }:
 
       <Label className='text-xl w-full text-start px-2 font-semibold'>Metadata</Label>
 
-        {motion.actions[actionnum].actionMetadata && Object.keys(motion.actions[actionnum].actionMetadata).length > 0 && Object.keys(motion.actions[actionnum].actionMetadata).map((key, index) => (
+        {motion.actions[actionnum].actionmetadata && Object.keys(motion.actions[actionnum].actionmetadata).length > 0 && Object.keys(motion.actions[actionnum].actionmetadata).map((key, index) => (
           <div className="flex w-full flex-col space-y-2" >
           <Label className='text-xl w-full text-start px-2 '>{key}</Label>
           
-          <Input onChange={(e) => handleOnchange({key, value:e.target.value}, "ACTION_METADATA")} className='font-semibold bg-gray-200 p-2 rounded-xl text-xl w-full text-start px-2' value={motion.actions[actionnum].actionMetadata[key]} />
+          <Input onChange={(e) => handleOnchange({key, value:e.target.value}, "ACTION_METADATA")} className='font-semibold bg-gray-200 p-2 rounded-xl text-xl w-full text-start px-2' value={motion.actions[actionnum].actionmetadata[key]} />
           </div>
         ))}
     </div>

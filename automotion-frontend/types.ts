@@ -46,6 +46,6 @@ export type MotionCreateType={
     actions : {
         name: string
         availableActionId: string
-        actionMetadata: any
+        actionmetadata: any
     }[]
 }

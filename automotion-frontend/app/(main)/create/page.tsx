@@ -1,5 +1,6 @@
 "use client"
 
+import { createMotion } from '@/actions/motion'
 import { Button } from '@/components/ui/button'
 import ActionCreateSidebar from '@/components/web/create/action_create_sidebar'
 import TriggerCreateSidebar from '@/components/web/create/trigger_create_sidebar'
@@ -19,13 +20,21 @@ const SingleMotion = ({ params }: { params: { id: string } }) => {
       "actions":[{
         "availableActionId":"",
         "name":"",
-        "actionMetadata":{}
+        "actionmetadata":{}
       }]
     })
     const [selectedActionnum, setselectedActionnum] = useState<number>(0)
     const [selectedTriggerName, setselectedTriggerName] = useState<string>("")
     const handleCreateMotion = async () => {
+      const data= await createMotion(motion)
+      if(data.success){
+        // router.push("/app/(main)")
+        console.log(data.data)
 
+      }
+      else{
+        alert("motion not created")
+      }
     }
 
     return (
