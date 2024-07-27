@@ -16,7 +16,7 @@ export const getUserByToken= async({token}:{token:string})=>{
     const data = await res.json()
     
     if(res.status === 200){
-        return data
+        return data.user
     }
     return null
 }

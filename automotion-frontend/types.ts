@@ -39,3 +39,13 @@ export type AvaialbleAction={
     name: string
     requiredfields: any
 }
+
+export type MotionCreateType={
+    availableTriggerId: string
+    triggerMetadata: any,
+    actions : {
+        name: string
+        availableActionId: string
+        actionMetadata: any
+    }[]
+}
