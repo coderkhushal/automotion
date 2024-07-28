@@ -47,7 +47,7 @@ const TriggerCreateSidebar = ({ motion, setmotion , setselectedTriggerName}: { m
             <Label className='font-semibold text-xl w-full text-start px-2 '>Available Triggers</Label>
             <Select onValueChange={handleavailableTriggerChange}>
                 <SelectTrigger className="w-full bg-gray-200">
-                    <SelectValue placeholder={(availableTriggers && availableTriggers[0].name) ? availableTriggers[0].name : ""} />
+                    <SelectValue placeholder={ ""} />
                 </SelectTrigger>
                 <SelectContent>
 

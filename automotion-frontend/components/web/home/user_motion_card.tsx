@@ -1,15 +1,27 @@
+import { deleteMotion } from '@/actions/motion'
 import { MotionType } from '@/types'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Trash } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
 const UserMotionCard = ({motion}:{motion: MotionType}) => {
+  const handledelete= async()=>{
+    const data= await deleteMotion(motion.id)
+    if(data.success){
+      alert("Motion Deleted")
+      window.location.reload()
+    }
+    else{
+      alert("Error in deleting motion")
+    }
+  }
   return (
     
-    <div className='w-full h-full mx-auto relative  border-black bg-primarydark rounded-xl p-6 text-zinc-900 text-center transition-all hover:scale-105'>
+    <div className='w-full h-full mx-auto relative   border-black bg-primarydark rounded-xl p-6 text-zinc-900 text-center '>
       <Link className='absolute right-5 top-5' href={`motion/${motion.id}`}>
-      <ArrowRight />
+      <ArrowRight className='transition-all hover:scale-110' />
       </Link>
+        <Trash onClick={handledelete} className='bottom-5 cursor-pointer right-5 absolute'/>
     <h1 className='font-semibold'>
 
       {motion.id}

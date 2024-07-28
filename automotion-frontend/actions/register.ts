@@ -13,12 +13,12 @@ export const  register = async (values: z.infer<typeof RegisterSchema>) => {
   }
 
   const { name, email, password } = validatedFields.data;
-  let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/user/signin`, {
+  let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/user/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({email , name, password }),
+    body: JSON.stringify({email , username:name, password }),
   });
   
   const data = await res.json();

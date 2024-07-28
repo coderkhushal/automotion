@@ -12,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 const ActionCreateSidebar = ({ motion, action, setmotion, actionnum }:
   {
@@ -67,7 +69,7 @@ const ActionCreateSidebar = ({ motion, action, setmotion, actionnum }:
   }
 
   return (
-    <div className="flex space-y-4 flex-col w-full h-full">
+    <div className="flex space-y-4 flex-col w-full h-full overflow-y-auto">
       <Label className='text-xl w-full text-start px-2'>Name</Label>
       <Input onChange={(e) => handleOnchange(e.target.value, "ACTION_NAME")} className='font-semibold bg-gray-200 p-2 rounded-xl text-xl w-full text-start px-2' value={motion.actions[actionnum].name} />
       <Label className='text-xl w-full text-start px-2'>Action Number</Label>
@@ -86,14 +88,16 @@ const ActionCreateSidebar = ({ motion, action, setmotion, actionnum }:
             </Select>
 
       <Label className='text-xl w-full text-start px-2 font-semibold'>Metadata</Label>
-
+      {availableAction?.find((e)=>e.id===(motion.actions[actionnum].availableActionId))?.name=="email" && <Link href={"https://gist.github.com/coderkhushal/a20706e03dbbf5ab30498d41bbd3c451"}><Button variant={"link"} className='text-green-500 py-0'>See how to generate</Button></Link>}
+                    
         {motion.actions[actionnum].actionmetadata && Object.keys(motion.actions[actionnum].actionmetadata).length > 0 && Object.keys(motion.actions[actionnum].actionmetadata).map((key, index) => (
-          <div className="flex w-full flex-col space-y-2" >
+          <div className="flex w-full flex-col space-y-2" key={index} >
           <Label className='text-xl w-full text-start px-2 '>{key}</Label>
           
           <Input onChange={(e) => handleOnchange({key, value:e.target.value}, "ACTION_METADATA")} className='font-semibold bg-gray-200 p-2 rounded-xl text-xl w-full text-start px-2' value={motion.actions[actionnum].actionmetadata[key]} />
           </div>
         ))}
+
     </div>
   )
 

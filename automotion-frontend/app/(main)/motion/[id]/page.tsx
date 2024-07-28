@@ -1,6 +1,5 @@
 "use client"
 import { getMotionById } from '@/actions/motion'
-import { Button } from '@/components/ui/button'
 import ActionSidebar from '@/components/web/motion/action_sidebar'
 
 import TriggerSidebar from '@/components/web/motion/tirgger_sidebar'
@@ -21,7 +20,7 @@ const SingleMotion = ({ params }: { params: { id: string } }) => {
     const fetchSingleMotion = async () => {
         if (!user) {
             await fetchUser()
-            
+
         }
         if (user) {
             const data = await getMotionById(params.id)
@@ -37,7 +36,21 @@ const SingleMotion = ({ params }: { params: { id: string } }) => {
 
     return (
         <div className='h-full flex flex-col w-full  p-4'>
-      
+            {user && <h1 className="font-semibold cursor-pointer shadow-xl text-sm lg:text-xl bg-gray-100 p-2 rounded-xl" onClick={() => { navigator.clipboard.writeText(`curl --request POST \
+  --url https://hookservice.onrender.com/hooks/catch/${user.id}/${params.id} \
+  --header 'content-type: application/json' \
+  --data '{
+ "motionId": "",
+  "metadata":{
+    "to":"",
+    "subject":"",
+    "text":"" 
+  }
+}
+`); alert("Curl copied, Please Edit sample Fields") }}>
+
+                POST : https://hookservice.onrender.com/hooks/catch/{user?.id}/{params.id} - <b>copy Curl </b>
+            </h1>}
             <div className="flex w-full h-full">
 
                 <div className="flex w-full justify-center items-center flex-col space-y-2 my-8">
@@ -46,8 +59,8 @@ const SingleMotion = ({ params }: { params: { id: string } }) => {
 
                     <h1 className='font-bold text-xl w-1/2 text-start px-2'>Actions</h1>
                     {motion?.actions && motion.actions.length === 0 && <h1 className='text-center text-2xl'>No Actions Found</h1>}
-                    {(motion?.actions && motion.actions.length>0) && motion.actions.map((e, index)=>(
-                        <div key={index} className='bg-gray-300 cursor-pointer text-gray-800 text-xl font-semibold shadow-2xl border-black border-2 w-1/2 rounded-2xl py-7 px-2 text-center' onClick={() => { setvariant("ACTION"); setselectedAction(e) }}>{index+1}. {e.name}</div>
+                    {(motion?.actions && motion.actions.length > 0) && motion.actions.map((e, index) => (
+                        <div key={index} className='bg-gray-300 cursor-pointer text-gray-800 text-xl font-semibold shadow-2xl border-black border-2 w-1/2 rounded-2xl py-7 px-2 text-center' onClick={() => { setvariant("ACTION"); setselectedAction(e) }}>{index + 1}. {e.name}</div>
                     ))}
                     {!motion?.actions && <h1 className='text-center text-2xl'>Loading...</h1>}
                 </div>
@@ -55,7 +68,6 @@ const SingleMotion = ({ params }: { params: { id: string } }) => {
 
                     {variant == "TRIGGER" ? <TriggerSidebar trigger={motion?.trigger ? motion.trigger : null} /> : <ActionSidebar action={selectedAction} />}
                 </div>
-                
             </div>
 
         </div>

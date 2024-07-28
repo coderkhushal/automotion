@@ -57,7 +57,7 @@ const RegisterPage = () => {
             if(result.success){
                 getSetToken(result.token)
                 await fetchUser();
-                router.push("/auth/details")
+                router.push("/")
             }
 
         }

@@ -36,7 +36,7 @@ model Trigger{
   id String @default(uuid()) @id
   motionId String @unique
   motion Motion @relation(fields: [motionId], references: [id])
-  availableId String @unique
+  availableId String 
   triggerMetadata Json
   type AvailableTrigger @relation(fields: [availableId], references: [id])
   
