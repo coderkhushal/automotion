@@ -5,13 +5,13 @@ import { Button } from '@/components/ui/button'
 import ActionCreateSidebar from '@/components/web/create/action_create_sidebar'
 import TriggerCreateSidebar from '@/components/web/create/trigger_create_sidebar'
 
-import { useAuthContext } from '@/context/AuthContext'
+import { useToast } from '@/hooks/use-toast'
 import { MotionCreateType } from '@/types'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const SingleMotion = ({ params }: { params: { id: string } }) => {
-
+  const toast = useToast()
   const router = useRouter()
   const [variant, setvariant] = useState<"ACTION" | "TRIGGER">("TRIGGER")
   const [motion, setmotion] = useState<MotionCreateType>({
@@ -28,12 +28,17 @@ const SingleMotion = ({ params }: { params: { id: string } }) => {
   const handleCreateMotion = async () => {
     const data = await createMotion(motion)
     if (data.success) {
-      alert("Motion Created Successfully")
+      // alert("Motion Created Successfully")
+      toast.toast({
+        title:"Motion Created Successfully"
+      })
       router.push("/")
 
     }
     else {
-      alert("motion not created")
+      toast.toast({
+         title:"Error Creating motion"
+      })
     }
   }
 

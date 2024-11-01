@@ -99,6 +99,7 @@ router.get("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, voi
             id
         },
         select: {
+            id: true,
             name: true,
             email: true
         }

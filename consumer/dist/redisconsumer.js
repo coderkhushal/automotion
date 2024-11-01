@@ -47,7 +47,7 @@ function main() {
                 const data = JSON.parse(response[1]);
                 switch (data.action.type.name) {
                     case "email":
-                        console.log("sent to email service", data.metadata);
+                        console.log("sent to email service");
                         yield MailerService_1.MailerService.getInstance().sendMail(data.metadata.SMTP_USER, data.metadata.SMTP_PASS, data.metadata.SMTP_HOST, data.metadata.to, data.metadata.subject, data.metadata.text);
                         break;
                     default:

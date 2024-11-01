@@ -6,8 +6,8 @@ import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { DbManager } from "../db";
 
-
 const router = Router();
+
 const prismaClient = DbManager.getInstance().getClient();
 router.post("/signup", async (req: Request, res :Response) => {
     const body = req.body;
@@ -118,5 +118,7 @@ router.get("/", authMiddleware, async (req: Request, res:Response) => {
         user
     });
 })
+
+
 
 export const userRouter = router;

@@ -1,9 +1,9 @@
 "use client"
 import CardWrapper from '@/components/web/auth/card_wrapper'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { RegisterSchema } from '@/schemas/index'
+import { LoginSchema } from '@/schemas/index'
 import { set, z } from 'zod'
 import { Button } from "@/components/ui/button"
 import {
@@ -20,44 +20,44 @@ import { Input } from "@/components/ui/input"
 
 import FormSuccess from '@/components/web/auth/form_success'
 import FormError from '@/components/web/auth/form_error'
-
-import { register } from '@/actions/register'
+import Social from '@/components/web/auth/social'
 
 import { useRouter } from 'next/navigation'
-import { useAuthContext } from '@/context/AuthContext'
+import { login } from '@/actions/login'
 import { getSetToken } from '@/hooks/getSetToken'
-import Social from '@/components/web/auth/social'
-const RegisterPage = () => {
-
+import { useAuthContext } from '@/context/AuthContext'
+import Link from 'next/link'
+const LoginPage = () => {
+    const { fetchUser } = useAuthContext()
+    const router = useRouter()
     const [error, seterror] = useState<string | undefined>(undefined)
     const [success, setsuccess] = useState<string | undefined>(undefined)
     const [Pending, setPending] = useState(false)
-    const router= useRouter()
-    const {fetchUser} = useAuthContext()
 
-    const form = useForm<z.infer<typeof RegisterSchema>>({
-        resolver: zodResolver(RegisterSchema),
+
+
+    const form = useForm<z.infer<typeof LoginSchema>>({
+        resolver: zodResolver(LoginSchema),
         defaultValues: {
-            name: "",
-            password: "",
-            email: ""
+            email: "",
+            password: ""
         }
     })
 
-    async function onSubmit(values: z.infer<typeof RegisterSchema>) {
+    async function onSubmit(values: z.infer<typeof LoginSchema>) {
         setsuccess("")
         seterror("")
         setPending(true)
 
         try {
-            let result = await register({name: values.name ,email: values.email, password: values.password})
+            let result = await login({ email: values.email, password: values.password })
+            getSetToken(result.token)
+            await fetchUser()
             seterror(result.error)
             setsuccess(result.success)
             setPending(false)
-            if(result.success){
-                getSetToken(result.token)
-                await fetchUser();
-                router.push("/")
+            if (result.success) {
+                router.push('/dashboard')
             }
 
         }
@@ -69,7 +69,7 @@ const RegisterPage = () => {
     }
     return (
         <div className='h-full w-full bg-tertiary flex justify-center items-center'>
-            <CardWrapper heading='Welcome back !' backbuttonhref='/auth/login' backbuttonlabel={`have an account?`}>
+            <CardWrapper heading='Welcome back !' backbuttonhref='/auth/register' backbuttonlabel={`Don't have an account?`}>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
@@ -78,33 +78,13 @@ const RegisterPage = () => {
                         <FormField
                             disabled={Pending}
                             control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Username</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder='John Doe'
-                                            disabled={Pending}
-                                            {...field} />
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-
-                            )}
-                        />
-                        <FormField
-
-                            control={form.control}
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder='JohnDoe@gmail.com'
-                                            type='email'
+                                            placeholder='John Doe'
                                             disabled={Pending}
                                             {...field} />
                                     </FormControl>
@@ -134,13 +114,18 @@ const RegisterPage = () => {
 
                             )}
                         />
-
+                        
                         <FormError message={error} />
                         <FormSuccess message={success} />
-                       
-
-                        
-                        <Button type="submit" className='w-full bg-tertiary' variant={"secondary"} disabled={Pending}>Submit</Button>
+                        {/* <div className='w-full text-center text-base font-light my-0'>or continue with</div> */}
+                        {/* <Link href={"/auth/forgetpass"} className='mt-1' >
+                            <Button variant={"link"} className='text-orange-800'>
+                                Forget Password?
+                            </Button>
+                        </Link> */}
+                        {/* <Social /> */}
+                {/* <Social/> */}
+                        <Button type="submit" className='w-full bg-tertiary' variant={"secondary"} disabled={Pending}>Submit </Button>
 
 
                     </form>
@@ -150,4 +135,4 @@ const RegisterPage = () => {
     )
 }
 
-export default RegisterPage
+export default LoginPage

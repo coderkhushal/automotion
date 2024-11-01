@@ -1,21 +1,25 @@
 version: '3.8'
 
 services:
-  zookeeperservice:
-    image: wurstmeister/zookeeper
-    ports:
-      - "2181:2181"
+  # zookeeperservice:
+  #   image: wurstmeister/zookeeper
+  #   ports:
+  #     - "2181:2181"
 
-  kafkaservice:
-    image: apache/kafka
+  # kafkaservice:
+  #   image: apache/kafka
+  #   ports:
+  #     - "9092:9092"
+  #   environment:
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafkaservice:9092
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeperservice:2181
+  #   depends_on:
+  #     - zookeeperservice
+  redisservice:
+    image: redis
     ports:
-      - "9092:9092"
-    environment:
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafkaservice:9092
-      KAFKA_ZOOKEEPER_CONNECT: zookeeperservice:2181
-    depends_on:
-      - zookeeperservice
-
+      - ""
+    
   postgresservice:
     image: postgres
     ports:

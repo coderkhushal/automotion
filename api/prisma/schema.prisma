@@ -19,6 +19,15 @@ model User{
   name String
   email String @unique
   password String
+  tokens Token[]
+}
+model Token {
+  id               Int      @id @default(autoincrement())
+  accessToken      String
+  refreshToken     String
+  accessTokenExpires Int
+  userId           Int      @unique
+  user             User     @relation(fields: [userId], references: [id])
 }
 
 model Motion{
