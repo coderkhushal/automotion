@@ -35,7 +35,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       //       },
       // },
       session: { strategy: "jwt" },
-      jwt: { secret: process.env.JWT_SECRET },
       debug: true,
       // callback url
       
