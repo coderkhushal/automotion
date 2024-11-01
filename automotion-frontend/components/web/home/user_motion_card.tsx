@@ -20,7 +20,7 @@ const UserMotionCard = ({motion}:{motion: MotionType}) => {
   const router= useRouter()
   return (
     
-    <Card onClick={()=>router.push("/motion/"+motion.id)} className='w-full cursor-pointer transition-all hover:scale-105 h-full mx-auto relative   border-black bg-neutral-100 rounded-xl p-6 text-zinc-900 text-center '>
+    <Card onClick={()=>router.push("/dashboard/motion/"+motion.id)} className='w-full cursor-pointer transition-all hover:scale-105 h-full mx-auto relative   border-muted-foreground bg-neutral-100 rounded-xl p-6 text-zinc-900 text-center '>
       <Link className='absolute right-5 top-5' href={`motion/${motion.id}`}>
       <ArrowRight className='transition-all hover:scale-110' />
       </Link>

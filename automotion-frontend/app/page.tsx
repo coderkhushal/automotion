@@ -18,7 +18,7 @@ const LandingPage = () => {
         Automotion
 
         </div>
-      {user ? <Button className='bg-lime-500 hover:bg-lime-600 transition-all '><Link href="/dasboard" className='flex gap-x-2 font-bold py-2 '>Dashboard <IconArrowRight/></Link></Button> : <Button className='bg-white text-black font-bold '>Login</Button>}
+      {user ? <Button className='bg-lime-500 hover:bg-lime-600 transition-all '><Link href="/dashboard" className='flex gap-x-2 font-bold py-2 '>Dashboard <IconArrowRight/></Link></Button> : <Button className='bg-white text-black font-bold '>Login</Button>}
       </nav>
       <h1 className='text-8xl mt-4 font-bold font-serif w-2/3 text-center'>Automate Work with</h1>
       <h1 className='text-8xl font-bold font-serif w-2/3 text-center text-lime-500'>Automotion</h1>
@@ -40,7 +40,7 @@ const LandingPage = () => {
       </div>
 
     </div>
-      
+          
     </div>
   )
 }
