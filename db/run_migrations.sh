@@ -30,5 +30,11 @@ if ! PGPASSWORD="$POSTGRES_PASSWORD" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" 
   exit 1
 fi
 
+# Running the seeding file
+echo 'Running seeding sql file...'
+if ! PGPASSWORD="$POSTGRES_PASSWORD" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f /seed.sql; then
+  echo "Error running migrations."
+  exit 1
+fi
 # Keep the PostgreSQL server running
 wait

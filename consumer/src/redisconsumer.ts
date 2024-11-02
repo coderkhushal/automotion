@@ -1,6 +1,7 @@
 import { Redis } from "ioredis";
 import { MailerService } from "./services/MailerService";
 import bodyParser from "body-parser";
+import schedule from "node-schedule"
 import cors from "cors"
 import Express from "express"
 const app = Express()
@@ -25,12 +26,12 @@ async function main() {
         console.log("connnected to redis")
     }
     )
-    while (loop) {
+    schedule.scheduleJob('*/5 * * * * *', async function () {
         try {
 
             const response: [string, string] | null = await client.brpop("AutomotionEvents", 5)
             if (!response) {
-                continue;
+                return;
             }
             console.log("received data")
             const data: { action: { type: { name: string } }, metadata: any } = JSON.parse(response[1])
@@ -47,7 +48,7 @@ async function main() {
             console.log(err)
         }
 
-    }
+    })
 }
 app.listen(8000, () => {
 

@@ -46,6 +46,8 @@ services:
     networks:
       - backend 
     environment:
+
+      REDIS_URL: redis://redisservice:6379
       DATABASE_URL: postgres://postgres:mysecretpassword@postgresservice:5432/postgres
     depends_on:
       - postgresservice

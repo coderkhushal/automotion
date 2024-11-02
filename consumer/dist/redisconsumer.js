@@ -12,9 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ioredis_1 = require("ioredis");
-const MailerService_1 = require("./services/MailerService");
 const body_parser_1 = __importDefault(require("body-parser"));
+const node_schedule_1 = __importDefault(require("node-schedule"));
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
@@ -33,31 +32,35 @@ app.get("/health", (req, res) => {
 });
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        const client = new ioredis_1.Redis(process.env.REDIS_URL.toString());
-        client.on("connect", () => {
-            console.log("connnected to redis");
+        // const client = new Redis(process.env.REDIS_URL!.toString())
+        // client.on("connect", () => {
+        //     console.log("connnected to redis")
+        // }
+        // )
+        node_schedule_1.default.scheduleJob('*/5 * * * * *', function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                try {
+                    console.log("running");
+                    // const response: [string, string] | null = await client.brpop("AutomotionEvents", 5)
+                    // if (!response) {
+                    //     return;
+                    // }
+                    // console.log("received data")
+                    // const data: { action: { type: { name: string } }, metadata: any } = JSON.parse(response[1])
+                    // switch (data.action.type.name) {
+                    //     case "email":
+                    //         console.log("sent to email service")
+                    //         await MailerService.getInstance().sendMail(data.metadata.SMTP_USER, data.metadata.SMTP_PASS, data.metadata.SMTP_HOST, data.metadata.to, data.metadata.subject, data.metadata.text)
+                    //         break;
+                    //     default:
+                    //         break
+                    // }
+                }
+                catch (err) {
+                    console.log(err);
+                }
+            });
         });
-        while (loop) {
-            try {
-                const response = yield client.brpop("AutomotionEvents", 5);
-                if (!response) {
-                    continue;
-                }
-                console.log("received data");
-                const data = JSON.parse(response[1]);
-                switch (data.action.type.name) {
-                    case "email":
-                        console.log("sent to email service");
-                        yield MailerService_1.MailerService.getInstance().sendMail(data.metadata.SMTP_USER, data.metadata.SMTP_PASS, data.metadata.SMTP_HOST, data.metadata.to, data.metadata.subject, data.metadata.text);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            catch (err) {
-                console.log(err);
-            }
-        }
     });
 }
 app.listen(8000, () => {
