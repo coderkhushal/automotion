@@ -46,6 +46,6 @@ app.post("/hooks/catch/:userid/:motionid", async (req, res) => {
     }
 })
 
-app.listen(4000, () => {
-    console.log("hook listening on 3000")
+app.listen(8080, () => {
+    console.log("hook listening on 8080")
 })

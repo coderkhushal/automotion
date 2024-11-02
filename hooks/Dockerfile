@@ -8,7 +8,8 @@ RUN npm install
 COPY . .
 
 RUN npx tsc -b
+
 RUN npx prisma generate
 EXPOSE 3000
 
-CMD ["node", "dist/index.js"]
+CMD ["sh", "-c", "npx prisma db pull && npx prisma generate &&  node dist/index.js"]

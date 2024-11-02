@@ -7,6 +7,8 @@ module.exports = {
         watch: true,
         env: {
           NODE_ENV: "production",
+          NEXT_PUBLIC_BASE_URL: "http://apiservice:4000"
+          
         },
       },
     ],

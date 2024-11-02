@@ -26,5 +26,5 @@ app.use("/api/v1/action",actionRouter)
 app.use("/api/v1/trigger",triggerRouter)
 app.use("api/auth/callback/google", googleauthRouter)
 app.listen(4000, () => {
-    console.log("Backend running on 3000")
+    console.log("Backend running on 4000")
 } )

@@ -69,6 +69,7 @@ const RegisterPage = () => {
     }
     return (
         <div className='h-full w-full bg-tertiary flex justify-center items-center'>
+            <h1>api link : {process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "not found"}</h1>
             <CardWrapper heading='Welcome back !' backbuttonhref='/auth/login' backbuttonlabel={`have an account?`}>
                 <Form {...form}>
                     <form

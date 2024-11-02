@@ -2,41 +2,51 @@ version: '3.8'
 
 services:
   redisservice:
+    networks:
+      - backend 
     image: redis
 
-  postgresservice:
-    image: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: postgres
 
   consumerservice:
     build:
       context: ./consumer/
       dockerfile: dockerfile
+
+    networks:
+      - backend 
     environment:
       NODEMAILER_USER: khushalbhasin4488@gmail.com  
       NODEMAILER_PASS: 123  
-      NODEMAILER_HOST: smtp.gmail.com  # Corrected typo (NODEMAILER_HOST instead of NODEmAILER_HOST)
-      REDIS_URL: redis://redisservice:6379  # Set Redis connection URL
+      NODEMAILER_HOST: smtp.gmail.com
+      REDIS_URL: redis://redisservice:6379
+    depends_on:
+      - redisservice
+      - postgresservice
 
   hooksservice:
     build:
       context: ./hooks/
       dockerfile: Dockerfile
+    
+    networks:
+      - backend 
+    ports:
+      - "8080:8080"
     environment:
       DATABASE_URL: postgres://postgres:mysecretpassword@postgresservice:5432/postgres
     depends_on:
       - redisservice
-      - postgresservice  
+      - postgresservice
 
   processorservice:
     build:
       context: ./processor/
       dockerfile: Dockerfile
+
+    networks:
+      - backend 
+    environment:
+      DATABASE_URL: postgres://postgres:mysecretpassword@postgresservice:5432/postgres
     depends_on:
       - postgresservice
       - redisservice
@@ -44,17 +54,48 @@ services:
   apiservice:
     build:
       context: ./api
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile 
+
+    networks:
+      - backend 
+    environment:
+      DATABASE_URL: postgres://postgres:mysecretpassword@postgresservice:5432/postgres
+      JWT_SECRET: khushalbhasin
     ports:
       - "4000:4000"
     depends_on:
       - postgresservice
     
-  frontendservice:
+  # frontendservice:
+  #   build:
+  #     context: ./automotion-frontend
+  #     dockerfile: Dockerfile
+
+  #   networks:
+  #     - backend 
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - apiservice
+  #   environment:
+  #     NEXT_PUBLIC_BASE_URL: apiservice:4000
+
+  postgresservice:
+  
     build:
-      context: ./automotion-frontend
-      dockerfile: Dockerfile
+      context: ./db  # Adjust based on the actual path to your db.dockerfile
+      dockerfile: db.dockerfile
+
+    networks:
+      - backend 
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgres
     ports:
-      - "3000:3000"
-    depends_on:
-      - apiservice
+      - "5433:5432"
+    restart: unless-stopped 
+
+networks:
+  backend:
+    driver: bridge
